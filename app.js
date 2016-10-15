@@ -2,9 +2,10 @@ require('dotenv').config();
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const app = express()
 const logger = require('morgan');
 const path = require('path');
+
+const app = express()
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -15,15 +16,21 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.use(logger('dev'));
-
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 // Index route
 app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
 })
 
+
+
 app.get('/makepayment', function(req,res) {
-    res.sendFile(path.join(__dirname+'/views/index.html'))
+    res.sendFile(path.join(__dirname+'/views/makepayment.html'))
+})
+
+app.post('/makepayment', function(req, res){
+    setTimeout(res.redirect('/paymentconfirmed'), 1000);
 })
 
 app.get('/paymentconfirmed', function(req, res) {
