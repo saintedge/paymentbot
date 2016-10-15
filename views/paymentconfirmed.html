@@ -54,11 +54,11 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-canvas {
+/*canvas {
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
+}*/
 p {
   margin-bottom: 30px;
 }
@@ -70,7 +70,7 @@ p {
     <div class="container">
 
       <div class="form-signin">
-        <h3 class="form-signin-heading">Payment Confirmed!</h3>
+        <!-- <h3 class="form-signin-heading">Payment Successful!</h3> -->
         <p>Payment for RM12 has been confirmed. Please show the following QR code to the retailer in order to obtain your purchased item.</p>
         <div id="qrcodeCanvas"></div> 
       </div>
@@ -90,8 +90,9 @@ p {
 
 
 <script>
+  var lol = Math.floor((Math.random() * 10000000) + 1);
   jQuery('#qrcodeCanvas').qrcode({
-    text  : "https://tadhackaxiata.herokuapp.com/verifypayment"
+    text  : "https://tadhackaxiata.herokuapp.com/verifypayment?transctionid=" + lol
   }); 
 </script>
   </body>
