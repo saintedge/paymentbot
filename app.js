@@ -24,21 +24,24 @@ app.get('/', function (req, res) {
 })
 
 
-
 app.get('/makepayment', function(req,res) {
     res.sendFile(path.join(__dirname+'/views/makepayment.html'))
 })
 
 app.post('/makepayment', function(req, res){
-    setTimeout(res.redirect('/paymentconfirmed'), 1000);
+    setTimeout(function() {
+        lel(req, res)
+    }, 2500);
 })
+
+const lel = (req, res) => {res.redirect('/paymentconfirmed')}
 
 app.get('/paymentconfirmed', function(req, res) {
     res.sendFile(path.join(__dirname+'/views/paymentconfirmed.html'))
 })
 
-app.get('/checkpayment', function(req, res) {
-    res.sendFile(path.join(__dirname+'/views/checkpayment.html'))
+app.get('/verifypayment', function(req, res) {
+    res.sendFile(path.join(__dirname+'/views/verifypayment.html'))
 })
 
 // for Facebook verification
@@ -79,7 +82,7 @@ app.post('/webhook/', function (req, res) {
             } else if (contains(text, ['payment'])) {
                 sendTextMessage(sender, "Ok sure!")
                 sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
-            } else if (contains(text, ['air zam zam', 'handmade clock'])) {
+            } else if (contains(text, ['air zam zam', 'handmade clock', 'chocolate brownie'])) {
                 sendTextMessage(sender, "Got it.")
                 sendTextMessage(sender, "How much would like to charge customers?")    
             } else if (contains(text, ['usd', 'myr', 'rm', '$'])) {

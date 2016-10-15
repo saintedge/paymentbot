@@ -54,14 +54,6 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-canvas {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-p {
-  margin-bottom: 30px;
-}
 </style>
   </head>
 
@@ -69,11 +61,19 @@ p {
 
     <div class="container">
 
-      <div class="form-signin">
-        <h3 class="form-signin-heading">Payment Confirmed!</h3>
-        <p>Payment for RM12 has been confirmed. Please show the following QR code to the retailer in order to obtain your purchased item.</p>
-        <div id="qrcodeCanvas"></div> 
-      </div>
+      <form class="form-signin" method="POST">
+        <h3 class="form-signin-heading">Payment Verified</h2>
+        <label for="inputEmail">Customer Phone Number</label>
+        <input type="text" id="inputEmail" class="form-control" placeholder="" value=60191122333 disabled>
+        </br>
+        <label for="inputPassword">Item Description</label>
+        <input type="text" id="inputPassword" class="form-control" value="chocolate brownie" disabled>
+        </br>
+        <label for="inputPassword">Amount</label>
+        <input type="text" id="inputPassword" class="form-control" value="MYR12" disabled>        
+        </br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Request Additional Support</button>
+      </form>
 
 
     </div> <!-- /container -->
@@ -83,16 +83,6 @@ p {
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-
-    <script type="text/javascript" src="./js/jquery.qrcode.js"></script>
-    <script type="text/javascript" src="./js/qrcode.js"></script>
-
-
-<script>
-  jQuery('#qrcodeCanvas').qrcode({
-    text  : "https://tadhackaxiata.com/verifypayment"
-  }); 
-</script>
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
