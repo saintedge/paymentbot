@@ -54,12 +54,20 @@ app.post('/webhook/', function (req, res) {
             if (text === 'Helloasd') {
                 sendGenericMessage(sender)
                 continue
-            } else if (contains(text, ['hello', 'hi'])) {
+            } else if (contains(text, ['hello', 'hi', 'hey', 'wassup', 'yo', 'apa khabar'])) {
             	sendTextMessage(sender, "Hello! How can I help you today?")
-            // } else if (text.indexOf('Hello') !== -1) {
-            // 	sendTextMessage(sender, "Hello! How can I help you today?")
+            } else if (contains(text, ['payment'])) {
+            	sendTextMessage(sender, "Ok sure!")
+            	sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
+            } else if (contains(text, ['air zam zam', 'handmade clock'])) {
+            	sendTextMessage(sender, "Got it.")
+            	sendTextMessage(sender, "How much would like to charge customers?")    
+            } else if (contains(text, ['usd', 'myr', 'rm', '$'])) {
+            	sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
+            	sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
+            	sendImage(sender)              	        
             } else {
-            	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            	sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself?" + text.substring(0, 200))
             }
             
         }
@@ -72,8 +80,7 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
-function sendTextMessage(sender, text) {
-    let messageData = { text:text }
+const postMessage = (sender, messageData) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:process.env.FB_PAGE_ACCESS_TOKEN},
@@ -88,7 +95,12 @@ function sendTextMessage(sender, text) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
-    })
+    })	
+}
+
+function sendTextMessage(sender, text) {
+    let messageData = { text:text }
+    postMessage(sender, messageData)
 }
 
 function sendGenericMessage(sender) {
@@ -123,19 +135,17 @@ function sendGenericMessage(sender) {
             }
         }
     }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:process.env.FB_PAGE_ACCESS_TOKEN},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
+    postMessage(sender, messageData)
+}
+
+function sendImage(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "image",
+			"payload": {
+				"url":"https://dl.dropboxusercontent.com/u/43355605/qr_code_tadhack.jpg"
+			}
+		}
+	}
+	postMessage(sender, messageData)
 }
