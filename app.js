@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const logger = require('morgan');
+const path = require('path');
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -21,27 +22,39 @@ app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
 })
 
+app.get('/makepayment', function(req,res) {
+    res.sendFile(path.join(__dirname+'/views/index.html'))
+})
+
+app.get('/paymentconfirmed', function(req, res) {
+    res.sendFile(path.join(__dirname+'/views/paymentconfirmed.html'))
+})
+
+app.get('/checkpayment', function(req, res) {
+    res.sendFile(path.join(__dirname+'/views/checkpayment.html'))
+})
+
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
     if (req.query['hub.verify_token'] === 'david_mayyie') {
         res.send(req.query['hub.challenge'])
     } else {
-    	res.send('Error, wrong token')
+        res.send('Error, wrong token')
     }
     
 })
 
 const contains = (originalString, subStringArray) => {
-	// console.log(1233)
-	// console.log(originalString.indexOf(subString))
-	let cleanString = originalString.toLowerCase();
-	let status = false
-	for (let i = 0; i < subStringArray.length; i++) {
-		if (cleanString.indexOf(subStringArray[i]) !== -1) {
-			status = true
-		}
-	}
-	return status
+    // console.log(1233)
+    // console.log(originalString.indexOf(subString))
+    let cleanString = originalString.toLowerCase();
+    let status = false
+    for (let i = 0; i < subStringArray.length; i++) {
+        if (cleanString.indexOf(subStringArray[i]) !== -1) {
+            status = true
+        }
+    }
+    return status
 }
 
 app.post('/webhook/', function (req, res) {
@@ -51,23 +64,23 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            if (text === 'Helloasd') {
+            if (text === 'may yie') {
                 sendGenericMessage(sender)
                 continue
             } else if (contains(text, ['hello', 'hi', 'hey', 'wassup', 'yo', 'apa khabar'])) {
-            	sendTextMessage(sender, "Hello! How can I help you today?")
+                sendTextMessage(sender, "Hello! How can I help you today?")
             } else if (contains(text, ['payment'])) {
-            	sendTextMessage(sender, "Ok sure!")
-            	sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
+                sendTextMessage(sender, "Ok sure!")
+                sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
             } else if (contains(text, ['air zam zam', 'handmade clock'])) {
-            	sendTextMessage(sender, "Got it.")
-            	sendTextMessage(sender, "How much would like to charge customers?")    
+                sendTextMessage(sender, "Got it.")
+                sendTextMessage(sender, "How much would like to charge customers?")    
             } else if (contains(text, ['usd', 'myr', 'rm', '$'])) {
-            	sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
-            	sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
-            	sendImage(sender)              	        
+                sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
+                sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
+                sendImage(sender)                       
             } else {
-            	sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself?" + text.substring(0, 200))
+                sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself?" + text.substring(0, 200))
             }
             
         }
@@ -95,11 +108,23 @@ const postMessage = (sender, messageData) => {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
-    })	
+    })  
 }
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
+    postMessage(sender, messageData)
+}
+
+function sendImage(sender) {
+    let messageData = {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url":"https://dl.dropboxusercontent.com/u/43355605/qr_code_tadhack.jpg"
+            }
+        }
+    }
     postMessage(sender, messageData)
 }
 
@@ -136,16 +161,4 @@ function sendGenericMessage(sender) {
         }
     }
     postMessage(sender, messageData)
-}
-
-function sendImage(sender) {
-	let messageData = {
-		"attachment": {
-			"type": "image",
-			"payload": {
-				"url":"https://dl.dropboxusercontent.com/u/43355605/qr_code_tadhack.jpg"
-			}
-		}
-	}
-	postMessage(sender, messageData)
 }
