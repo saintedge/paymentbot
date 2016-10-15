@@ -31,6 +31,19 @@ app.get('/webhook/', function (req, res) {
     
 })
 
+const contains = (originalString, subStringArray) => {
+	// console.log(1233)
+	// console.log(originalString.indexOf(subString))
+	let cleanString = originalString.toLowerCase();
+	let status = false
+	for (let i = 0; i < subStringArray.length; i++) {
+		if (cleanString.indexOf(subStringArray[i]) !== -1) {
+			status = true
+		}
+	}
+	return status
+}
+
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
@@ -38,15 +51,22 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            if (text === 'Generic') {
+            if (text === 'Helloasd') {
                 sendGenericMessage(sender)
                 continue
+            } else if (contains(text, ['hello', 'hi'])) {
+            	sendTextMessage(sender, "Hello! How can I help you today?")
+            // } else if (text.indexOf('Hello') !== -1) {
+            // 	sendTextMessage(sender, "Hello! How can I help you today?")
+            } else {
+            	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            
         }
     }
     res.sendStatus(200)
 })
+
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
