@@ -87,8 +87,10 @@ app.post('/webhook/', function (req, res) {
                 sendTextMessage(sender, "Got it.")
                 sendTextMessage(sender, "How much would like to charge customers?")    
             } else if (contains(text, ['usd', 'myr', 'rm', '$'])) {
-                sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
+                
+                
                 sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
+                sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
                 sendImage(sender)                       
             } else {
                 sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself?" + text.substring(0, 200))
