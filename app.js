@@ -81,7 +81,7 @@ app.post('/webhook/', function (req, res) {
                 sendTextMessage(sender, "Hello! How can I help you today?")
             } else if (contains(text, ['payment'])) {
                 sendTextMessage(sender, "Ok sure!")
-                sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
+                setTimeout(sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?"), 5000)
             } else if (contains(text, ['air zam zam', 'handmade clock', 'chocolate brownie'])) {
                 sendTextMessage(sender, "Got it.")
                 sendTextMessage(sender, "How much would like to charge customers?")    
