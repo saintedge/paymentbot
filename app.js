@@ -58,6 +58,7 @@ const contains = (originalString, subStringArray) => {
     // console.log(1233)
     // console.log(originalString.indexOf(subString))
     let cleanString = originalString.toLowerCase();
+    cleanString = cleanString.toString();
     let status = false
     for (let i = 0; i < subStringArray.length; i++) {
         if (cleanString.indexOf(subStringArray[i]) !== -1) {
@@ -78,7 +79,8 @@ app.post('/webhook/', function (req, res) {
                 sendGenericMessage(sender)
                 continue
             } else if (contains(text, ['hello', 'hi', 'hey', 'wassup', 'yo', 'apa khabar'])) {
-                sendTextMessage(sender, "Hello! How can I help you today?")
+                sendTextMessage(sender, "Hello! Before we proceed further, could you please let me know your preferred language of communication?")
+                sendStructuredMessage(sender, 'Please pick your preferred language', 'English', 'Bahasa Malaysia')
             } else if (contains(text, ['payment'])) {
                 sendTextMessage(sender, "Ok sure!")
                 // setTimeout(function() {sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")}, 5000)
@@ -90,8 +92,18 @@ app.post('/webhook/', function (req, res) {
                 sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
                 sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
                 sendImage(sender)                       
-            } else {
-                sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself?" + text.substring(0, 200))
+            } else if (contains(text, ['english'])) {
+                sendTextMessage(sender, 'Ok got it!')
+                sendStructuredMessage(sender, 'What would you like to talk to us about today?', 'I have a question regarding a product or service', 'I would like to raise a complaint')
+            } else if (contains(text, ['I would like to raise a complaint'])) {
+                sendTextMessage(sender, 'Sure thing. Could you please let us know your IC and phone number?')
+            } else if (contains(text, ['930219075299'])) {
+                console.log('boss is here')
+            } else if (contains(text, ['0132522041'])) {
+                sendTextMessage(sender, 'Thank you for providing me with the information. Could you please let me know the nature of your complaint?')
+            }
+            else {
+                sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself? " + text.substring(0, 200))
             }
             
         }
@@ -166,6 +178,32 @@ function sendGenericMessage(sender) {
                         "type": "postback",
                         "title": "Postback",
                         "payload": "Payload for second element in a generic bubble",
+                    }],
+                }]
+            }
+        }
+    }
+    postMessage(sender, messageData)
+}
+
+function sendStructuredMessage(sender, question, opt1, opt2) {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": question,
+                    // "subtitle": "Element #1 of an hscroll",
+                    // "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "postback",
+                        "title": opt1,
+                        "payload": opt1
+                    }, {
+                        "type": "postback",
+                        "title": opt1,
+                        "payload": opt2
                     }],
                 }]
             }
