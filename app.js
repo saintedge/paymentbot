@@ -94,8 +94,8 @@ app.post('/webhook/', function (req, res) {
                 sendImage(sender)                       
             } else if (contains(text, ['english'])) {
                 sendTextMessage(sender, 'Ok got it!')
-                sendStructuredMessage(sender, 'What would you like to talk to us about today?', 'I have a question regarding a product or service', 'I would like to raise a complaint')
-            } else if (contains(text, ['I would like to raise a complaint'])) {
+                sendStructuredMessage(sender, 'What would you like to talk to us about today?', 'Product or service', 'I would like to raise a complaint')
+            } else if (contains(text, ['complaint'])) {
                 sendTextMessage(sender, 'Sure thing. Could you please let us know your IC and phone number?')
             } else if (contains(text, ['930219075299'])) {
                 console.log('boss is here')
