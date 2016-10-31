@@ -57,8 +57,10 @@ app.get('/webhook/', function (req, res) {
 const contains = (originalString, subStringArray) => {
     // console.log(1233)
     // console.log(originalString.indexOf(subString))
-    let cleanString = originalString.toLowerCase();
-    cleanString = cleanString.toString();
+    // let cleanString = originalString.toLowerCase();
+    // cleanString = cleanString.toString();
+    let cleanString = originalString.toString();
+    cleanString = cleanString.toLowerCase();
     let status = false
     for (let i = 0; i < subStringArray.length; i++) {
         if (cleanString.indexOf(subStringArray[i]) !== -1) {
