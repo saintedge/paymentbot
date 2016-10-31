@@ -60,6 +60,9 @@ const contains = (originalString, subStringArray) => {
     // let cleanString = originalString.toLowerCase();
     // cleanString = cleanString.toString();
     let cleanString = originalString.toString();
+    console.log(cleanString)
+    console.log(typeof(cleanString))
+    console.log(subStringArray[0])
     cleanString = cleanString.toLowerCase();
     let status = false
     for (let i = 0; i < subStringArray.length; i++) {
