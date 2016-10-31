@@ -96,13 +96,17 @@ app.post('/webhook/', function (req, res) {
                 sendImage(sender)                       
             } else if (contains(text, ['english'])) {
                 sendTextMessage(sender, 'Ok got it!')
+
                 sendStructuredMessage(sender, 'What would you like to talk to us about today?', 'Product or service', 'Complaint')
             } else if (contains(text, ['complaint'])) {
+
                 sendTextMessage(sender, 'Sure thing. Could you please let us know your IC and phone number?')
             } else if (contains(text, ['930219075299'])) {
                 console.log('boss is here')
             } else if (contains(text, ['0132522041'])) {
                 sendTextMessage(sender, 'Thank you for providing me with the information. Could you please let me know the nature of your complaint?')
+            } else if(event.postback) {
+                receivedPostback(event.postback)
             }
             else {
                 sendTextMessage(sender, "I am sorry but I did not understand that. Could you please repeat yourself? " + text.substring(0, 200))
@@ -204,7 +208,7 @@ function sendStructuredMessage(sender, question, opt1, opt2) {
                         "payload": opt1
                     }, {
                         "type": "postback",
-                        "title": opt1,
+                        "title": opt2,
                         "payload": opt2
                     }],
                 }]
@@ -212,4 +216,21 @@ function sendStructuredMessage(sender, question, opt1, opt2) {
         }
     }
     postMessage(sender, messageData)
+}
+
+function receivedPostback(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfPostback = event.timestamp;
+
+  // The 'payload' param is a developer-defined field which is set in a postback 
+  // button for Structured Messages. 
+  var payload = event.postback.payload;
+
+  console.log("Received postback for user %d and page %d with payload '%s' " + 
+    "at %d", senderID, recipientID, payload, timeOfPostback);
+
+  // When a postback is called, we'll send a message back to the sender to 
+  // let them know it was successful
+  sendTextMessage(senderID, "Postback called");
 }
