@@ -82,15 +82,17 @@ app.post('/webhook/', function (req, res) {
                 sendTextMessage(sender, "Hello! Before we proceed further, could you please let me know your preferred language of communication?")
                 sendStructuredMessage(sender, 'Please pick your preferred language', 'English', 'Bahasa Malaysia')
             } else if (contains(text, ['payment'])) {
-                sendTextMessage(sender, "Ok sure!")
+                // sendTextMessage(sender, "Ok sure!")
                 // setTimeout(function() {sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")}, 5000)
-                sendTextMessage(sender, "May I know what is the name of the item that you like to receive payment for?")
+                sendTextMessage(sender, "Ok sure. May I know what is the name of the item that you like to receive payment for?")
             } else if (contains(text, ['air zam zam', 'handmade clock', 'chocolate brownie'])) {
-                sendTextMessage(sender, "Got it.")
+                // sendTextMessage(sender, "Got it.")
                 sendTextMessage(sender, "How much would like to charge customers?")    
             } else if (contains(text, ['usd', 'myr', 'rm', '$'])) {
-                sendTextMessage(sender, "Ok. Thanks for providing me with the details. Here is the QR code for your product.")
+                
+                
                 sendTextMessage(sender, "Any Celcom/Dialog/Smart user will be able to purchase your product by scanning the QR code on their phone")     
+                sendTextMessage(sender, "Thanks for providing me with the details. Here is the QR code for your product.")
                 sendImage(sender)                       
             } else if (contains(text, ['english'])) {
                 sendTextMessage(sender, 'Ok got it!')
